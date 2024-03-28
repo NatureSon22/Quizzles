@@ -1,0 +1,54 @@
+{
+    "subjects": {
+        "subject_1": {
+            "title": "Emerging Technologies",
+            "description": "This lesson introduces emerging technologies",
+            "banner_img": "asset/banner/emerging.png",
+            "lessons": {
+                "lesson_1": {
+                    "title": "What is Emerging Technology",
+                    "content": "This is the definition of emerging technologies",
+                    "status": "available",
+                    "quiz": {
+                        "questions": ["...", "..."],
+                        "choices": [[], []],
+                        "correctAnswer": []
+                    },
+                    "scores": {
+                        "score": "0"
+                    }
+                },
+                "lesson_2": {
+                    "title": "...",
+                    "content": "...",
+                    "status": "..."
+                }
+            }
+        },
+        "subject_2": {
+            "title": "...",
+            "description": "...",
+            "banner_img": "...",
+            "lessons": {
+                "lesson_1": {
+                    "title": "What is Internet of Things?",
+                    "content": "This is the definition of Internet of Things",
+                    "status": "available",
+                    "quiz": {
+                        "questions": ["..."],
+                        "choices": [[], []],
+                        "correctAnswer": []
+                    },
+                    "scores": {
+                        "score": "..."
+                    }
+                },
+                "lesson_2": {
+                    "title": "...",
+                    "content": "...",
+                    "status": "..."
+                }
+            }
+        }
+    }
+}
