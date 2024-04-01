@@ -23,6 +23,7 @@ class BorderGradientButton extends StatelessWidget {
       child: Container(
           width: padding != 0 ? double.maxFinite : double.infinity,
           decoration: BoxDecoration(
+            color: white,
               border: const GradientBoxBorder(
                 gradient: leftBottomGradient,
                 width: 3,

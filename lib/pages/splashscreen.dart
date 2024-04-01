@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
-import 'package:midterm_app/pages/captcha_app/captcha.dart';
 import 'package:midterm_app/pages/startingscreen.dart';
 import 'package:midterm_app/util/colors.dart';
 import 'package:page_transition/page_transition.dart';

@@ -27,3 +27,9 @@ const LinearGradient leftBottomGradient = LinearGradient(
 const LinearGradient lightLeftBottomGradient = LinearGradient(
   colors: [Color.fromRGBO(1, 165, 254, 0.2), Color.fromRGBO(112, 2, 205, 0.2)],
 );
+
+const LinearGradient lightTopBottomGradient = LinearGradient(
+  colors: [Color.fromRGBO(1, 165, 254, 0.1), Color.fromRGBO(112, 2, 205, 0.35)],
+   begin: Alignment.topCenter,
+    end: Alignment.bottomCenter
+);

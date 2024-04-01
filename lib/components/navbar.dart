@@ -3,7 +3,8 @@ import 'package:google_nav_bar/google_nav_bar.dart';
 import 'package:midterm_app/util/colors.dart';
 
 class NavBar extends StatelessWidget {
-  const NavBar({super.key});
+  final Function handleSelectedTab;
+  const NavBar({super.key, required this.handleSelectedTab});
 
   @override
   Widget build(BuildContext context) {
@@ -32,6 +33,7 @@ class NavBar extends StatelessWidget {
             iconSize: 25,
             tabBackgroundColor: deepBlueLight,
             padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 20),
+            onTabChange: (value) => handleSelectedTab(value),
             textStyle: const TextStyle(
                 fontSize: 15,
                 fontFamily: 'Poppins',

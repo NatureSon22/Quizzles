@@ -6,13 +6,16 @@ class GradientButton extends StatelessWidget {
   final Function handleOnTap;
   final double padding;
   final bool putIcon;
+  final double fontSize;
 
   const GradientButton(
       {Key? key,
       required this.label,
       required this.handleOnTap,
       this.padding = 0,
-      this.putIcon = false})
+      this.putIcon = false,
+      this.fontSize = 20
+      })
       : super(key: key);
 
   @override
@@ -37,8 +40,8 @@ class GradientButton extends StatelessWidget {
               : Text(
                   label,
                   textAlign: TextAlign.center,
-                  style: const TextStyle(
-                    fontSize: 20,
+                  style: TextStyle(
+                    fontSize: fontSize,
                     fontWeight: FontWeight.w500,
                     color: Colors.white,
                     fontFamily: 'Poppins',

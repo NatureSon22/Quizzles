@@ -7,7 +7,10 @@ class SubjectTab extends StatelessWidget {
   final String subjectTitle;
   final String code;
   const SubjectTab(
-      {super.key, required this.imagePath, required this.subjectTitle, required this.code});
+      {super.key,
+      required this.imagePath,
+      required this.subjectTitle,
+      required this.code});
 
   @override
   Widget build(BuildContext context) {
@@ -24,6 +27,7 @@ class SubjectTab extends StatelessWidget {
                 offset: Offset(0, 2))
           ]),
       child: MaterialButton(
+        highlightColor: Colors.transparent,
         onPressed: () {
           Navigator.push(
               context,

@@ -43,6 +43,8 @@ dependencies:
   gradient_borders: ^1.0.0
   google_nav_bar: ^5.0.6
   page_transition: ^2.1.0
+  font_awesome_flutter: ^10.7.0
+  flutter_widget_from_html_core: ^0.14.11
 
 dev_dependencies:
   flutter_test:
@@ -82,7 +84,9 @@ flutter:
   assets:
     - assets/images/
     - assets/images/element/
+    - assets/images/banner/
     - assets/lottie/
+    - lib/data/html/
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware

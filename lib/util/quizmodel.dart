@@ -1,15 +1,18 @@
 class Question {
   final String text;
   final List<Option> options;
-  bool isLocked;
   Option? selectedOption;
 
   Question({
     required this.text,
     required this.options,
-    this.isLocked = false,
     this.selectedOption
   });
+
+  @override
+  String toString() {
+    return  'Question{text: $text, selectedOption: ${selectedOption?.isCorrect}}';
+  }
 }
 
 class Option {

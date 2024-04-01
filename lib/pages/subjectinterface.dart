@@ -1,9 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gradient_borders/box_borders/gradient_box_border.dart';
 import 'package:midterm_app/components/gradienttext.dart';
-import 'package:midterm_app/components/navbar.dart';
 import 'package:midterm_app/data/subjectlessons.dart';
+import 'package:midterm_app/data/userprogress.dart';
+import 'package:midterm_app/pages/allquizzes.dart';
+import 'package:midterm_app/pages/lessoninterface.dart';
 import 'package:midterm_app/util/colors.dart';
+import 'package:page_transition/page_transition.dart';
+
+final chosenSubjectLesson = StateProvider((ref) => {'code': '', 'lesson': ''});
 
 class SubjectInterface extends StatelessWidget {
   final String code;
@@ -29,7 +35,7 @@ class SubjectInterface extends StatelessWidget {
               decoration: const BoxDecoration(
                 gradient: leftBottomGradient,
                 borderRadius:
-                    BorderRadius.only(bottomRight: Radius.circular(20)),
+                    BorderRadius.only(bottomRight: Radius.circular(30)),
               ),
               child: Stack(
                 clipBehavior: Clip.none,
@@ -58,7 +64,7 @@ class SubjectInterface extends StatelessWidget {
                       child: Hero(
                         tag: code,
                         child: Image.asset(
-                          'assets/images/element/IT4.png',
+                          'assets/images/element/$code.png',
                           width: 70,
                         ),
                       ),
@@ -91,7 +97,7 @@ class SubjectInterface extends StatelessWidget {
                       ),
                       Flexible(
                         child: Text(
-                          materials['ITE4']['overview'],
+                          materials[code]['overview'],
                           textAlign: TextAlign.justify,
                           style: const TextStyle(
                               fontFamily: 'Poppins', fontSize: 13),
@@ -102,6 +108,11 @@ class SubjectInterface extends StatelessWidget {
                 )
               ],
             )),
+            Container(
+              height: 2,
+              color: tabShadow,
+              margin: const EdgeInsets.all(20),
+            ),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 30),
               child: Row(
@@ -109,7 +120,9 @@ class SubjectInterface extends StatelessWidget {
                 children: [
                   const GradientText(text: 'Lessons', textSize: 25),
                   TextButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        Navigator.push(context, MaterialPageRoute(builder: (context) => QuizzList(code: code)));
+                      },
                       child: const Text(
                         'See all quizzes',
                         style: TextStyle(
@@ -121,8 +134,23 @@ class SubjectInterface extends StatelessWidget {
                 ],
               ),
             ),
-            const SizedBox(height: 200, child: LessonList()),
-            const NavBar()
+            SizedBox(
+                height: 200,
+                child: Consumer(
+                  builder: (context, ref, _) {
+                    return LessonList(code: code, ref: ref);
+                  },
+                )),
+            const SizedBox(
+              height: 20,
+            ),
+            Container(
+              height: 90,
+              decoration: const BoxDecoration(
+                  gradient: leftBottomGradient,
+                  borderRadius:
+                      BorderRadius.only(topLeft: Radius.circular(30))),
+            )
           ],
         ),
       ),
@@ -130,13 +158,58 @@ class SubjectInterface extends StatelessWidget {
   }
 }
 
-class LessonList extends StatelessWidget {
-  const LessonList({super.key});
+class LessonList extends StatefulWidget {
+  final String code;
+  final dynamic ref;
+
+  const LessonList({
+    super.key,
+    required this.code,
+    required this.ref,
+  });
+
+  @override
+  State<LessonList> createState() => _LessonListState();
+}
+
+class _LessonListState extends State<LessonList> {
+  late List<Lesson> subjectLessons;
+
+  @override
+  void initState() {
+    super.initState();
+    try {
+      final notifier = widget.ref.watch(subjectListProvider.notifier);
+      subjectLessons = notifier.getSubjectByTitle(widget.code).lessons;
+    } catch (e) {
+      debugPrint(e.toString());
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
+    void handleOnPress(int index, String lessonTitle) {
+      widget.ref
+          .read(chosenSubjectLesson.notifier)
+          .update((state) => {'code': widget.code, 'lesson': lessonTitle});
+
+      Navigator.push(
+          context,
+          PageTransition(
+              child: LessonInterface(
+                code: widget.code,
+                index: index,
+                filePath: materials[widget.code]['lessons'][index]['content'],
+              ),
+              type: PageTransitionType.bottomToTop,
+              duration: const Duration(milliseconds: 400),
+              curve: Curves.easeInOutBack));
+    }
+
     return ListView.separated(
-      itemCount: materials['ITE4']['lessons'].length,
+      itemCount: materials[widget.code]['lessons'] != null
+          ? materials[widget.code]['lessons'].length
+          : 0,
       padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 20),
       separatorBuilder: (context, index) => const SizedBox(
         height: 10,
@@ -144,20 +217,28 @@ class LessonList extends StatelessWidget {
       itemBuilder: (context, int index) {
         return Container(
           padding: EdgeInsets.zero,
-          decoration: const BoxDecoration(
-              gradient: lightLeftBottomGradient,
-              border:
-                  GradientBoxBorder(gradient: leftBottomGradient, width: 2)),
+          decoration: BoxDecoration(
+              gradient: subjectLessons[index].available
+                  ? lightLeftBottomGradient
+                  : null,
+              border: subjectLessons[index].available
+                  ? const GradientBoxBorder(
+                      gradient: leftBottomGradient, width: 2)
+                  : Border.all(color: tabShadow, width: 2)),
           child: MaterialButton(
+            highlightColor: Colors.transparent,
             padding: EdgeInsets.zero,
-            onPressed: () {},
+            onPressed: () => subjectLessons[index].available
+                ? handleOnPress(
+                    index, materials[widget.code]?['lessons']?[index]['title'])
+                : {},
             child: Text(
-              materials['ITE4']?['lessons']?[index]['title'],
+              materials[widget.code]?['lessons']?[index]['title'],
               textAlign: TextAlign.center,
-              style: const TextStyle(
+              style: TextStyle(
                   fontFamily: 'Poppins',
-                  color: deepBlue,
-                  fontSize: 15,
+                  color: subjectLessons[index].available ? deepBlue : elevation,
+                  fontSize: 14,
                   fontWeight: FontWeight.w500),
             ),
           ),
